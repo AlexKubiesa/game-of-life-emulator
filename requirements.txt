@@ -1,0 +1,6 @@
+certifi==2021.5.30
+pygame==2.4.0
+numpy
+ipykernel
+torch
+matplotlib

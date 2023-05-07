@@ -4,3 +4,4 @@ numpy
 ipykernel
 torch
 matplotlib
+pandas

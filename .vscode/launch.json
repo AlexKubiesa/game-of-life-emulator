@@ -12,7 +12,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": "--predictor model"
+            "args": "--predictor model --update-mode normal"
         }
     ]
 }

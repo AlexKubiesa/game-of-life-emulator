@@ -7,7 +7,7 @@ from torch import nn
 class CellPredictor:
     """Base class for predicting cell states."""
 
-    def predict(self, cell_states: npt.NDArray) -> int:
+    def predict(self, cell_states: npt.NDArray) -> npt.NDArray[np.float32]:
         """Takes a grid of cell states and predicts the next state of the inner cells.
 
         Arguments:
@@ -27,7 +27,7 @@ class CellPredictor:
 class ExplicitCellPredictor(CellPredictor):
     """Implementation of `CellStatePredictor` that gives the correct prediction, by definition."""
 
-    def predict(self, cell_states: npt.NDArray) -> npt.NDArray[np.int32]:
+    def predict(self, cell_states: npt.NDArray) -> npt.NDArray[np.float32]:
         width = cell_states.shape[0] - 2
         height = cell_states.shape[1] - 2
         alive = cell_states[1:width+1, 1:height+1] == 1
@@ -38,7 +38,7 @@ class ExplicitCellPredictor(CellPredictor):
                     continue
                 alive_neighbours += cell_states[1+x_offset:width+1+x_offset, 1+y_offset:height+1+y_offset]
         predictions = (alive_neighbours == 3) | (alive & (alive_neighbours == 2))
-        predictions = predictions.astype(np.int32)
+        predictions = predictions.astype(np.float32)
         return predictions
 
 
@@ -46,12 +46,12 @@ class ModelBasedCellPredictor(CellPredictor):
     def __init__(self, model: nn.Module):
         self.model = model
 
-    def predict(self, cell_states: npt.NDArray) -> npt.NDArray[np.int32]:
+    def predict(self, cell_states: npt.NDArray) -> npt.NDArray[np.float32]:
         # Convert to torch tensor, add batch and channel dimensions
         X = torch.tensor(cell_states, dtype=torch.float).expand((1, 1, -1, -1))
         with torch.no_grad():
             logits = self.model(X)
-        logits = logits.numpy().squeeze(0)
-        preds = (logits > 0.0).astype(np.int32)
+            preds = torch.sigmoid(logits)
+            preds = preds.numpy().squeeze(0)
         return preds
 

@@ -27,10 +27,17 @@ def get_cell_predictor(name: str) -> CellPredictor:
     raise ValueError(f"Unrecognised cell predictor name: {name}.")
 
 
-def update_grid(grid: npt.NDArray, cell_predictor: CellPredictor) -> npt.NDArray:
+def update_grid(grid: npt.NDArray, cell_predictor: CellPredictor, update_mode: str) -> npt.NDArray:
     padded_grid = np.pad(grid, ((1, 1), (1, 1)))
-    new_grid = cell_predictor.predict(padded_grid)
-    return new_grid
+    preds = cell_predictor.predict(padded_grid)
+    if update_mode == "normal":
+        new_grid = (preds > 0.5).astype(np.int32)
+        return new_grid
+    if update_mode == "probabilistic":
+        randoms = np.random.random_sample(preds.shape)
+        new_grid = (randoms < preds).astype(np.int32)
+        return new_grid
+    raise ValueError(f"Unrecognised update mode: {update_mode}.")
 
 
 def draw_grid(screen: pygame.Surface, grid: npt.NDArray) -> None:
@@ -78,6 +85,14 @@ def main():
         help="The predictor is the component which controls grid updates. 'model' is a machine" +
         " learning model-based predictor. 'explicit' is a predictor with the Game of Life update" +
         " rule explicitly coded in.")
+    parser.add_argument(
+        "--update-mode",
+        default="normal",
+        choices=["normal", "probabilistic"],
+        help="The grid update mode determines how the predictor's output update the grid." +
+        " 'normal' means the outputs are thresholded to 0 or 1 and the grid is updated with the" +
+        " thresholded values. 'probabilistic' means the outputs are interpreted as probabilities" +
+        " p, where the cell becomes 1 with probability p and 0 with probability (1-p).")
     args = parser.parse_args()
 
     grid = gosper_glider
@@ -92,7 +107,7 @@ def main():
 
         screen.fill((0, 0, 0))
         draw_grid(screen, grid)
-        grid = update_grid(grid, cell_predictor)
+        grid = update_grid(grid, cell_predictor, args.update_mode)
         pygame.display.flip()
         time.sleep(0.1)
 

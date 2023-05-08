@@ -13,24 +13,22 @@ The cell predictor can be configured to be either a hard-coded one which explici
 
 Ensure you have Python (3.10) installed and a virtual environment created and activated. Install dependencies with:
 
-> pip install -r requirements.txt
+> `pip install -r requirements.txt`
 
 You can run the game with:
 
-> python pygame_life.py
+> `python pygame_life.py`
+
+Command-line help is available with:
+
+> `python pygame_life.py --help`
 
 
 ## Switching to rule-based prediction
 
-In `pygame_life.py`, you can change the line
+When running the game on the command line, you can optionally specify the predictor used with the `--predictor` option. Choose `"explicit"` to use the explicit predictor.
 
-> `cell_predictor = get_cell_predictor("model")`
-
-to
-
-> `cell_predictor = get_cell_predictor("explicit")`
-
-and this will use the explicit rule-based cell predictor.
+> `python pygame_life.py --predictor explicit`
 
 
 # Retraining the model

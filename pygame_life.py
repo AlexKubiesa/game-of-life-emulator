@@ -1,5 +1,6 @@
 import sys
 import time
+import argparse
 
 import pygame
 import numpy as np
@@ -69,8 +70,18 @@ def draw_grid(screen: pygame.Surface, grid: npt.NDArray) -> None:
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--predictor",
+        default="model",
+        choices=["model", "explicit"],
+        help="The predictor is the component which controls grid updates. 'model' is a machine" +
+        " learning model-based predictor. 'explicit' is a predictor with the Game of Life update" +
+        " rule explicitly coded in.")
+    args = parser.parse_args()
+
     grid = gosper_glider
-    cell_predictor = get_cell_predictor("model")
+    cell_predictor = get_cell_predictor(args.predictor)
 
     pygame.init()
     screen = pygame.display.set_mode((600, 400))

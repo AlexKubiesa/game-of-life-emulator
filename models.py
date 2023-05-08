@@ -14,8 +14,8 @@ class CellPredictorModel(nn.Module):
 
     def __init__(self):
         super().__init__()
-        self.conv0 = nn.Conv2d(1, 85, 3)
-        self.conv1 = nn.Conv2d(85, 10, 1)
+        self.conv0 = nn.Conv2d(1, 10, 3)
+        self.conv1 = nn.Conv2d(10, 10, 1)
         self.conv2 = nn.Conv2d(10, 1, 1)
 
     def forward(self, x):

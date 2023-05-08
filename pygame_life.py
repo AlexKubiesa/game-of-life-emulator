@@ -98,11 +98,11 @@ def main():
         default="normal",
         choices=["normal", "probabilistic", "soft"],
         help="The grid update mode determines how the predictor's output update the grid." +
-        " 'normal' means the outputs are thresholded to 0 or 1 and the grid is updated with the" +
-        " thresholded values. 'probabilistic' means the outputs are interpreted as probabilities" +
+        " 'normal' means the outputs are thresholded to 0 or 1 and the thresholded values are" +
+        " written to the grid. 'probabilistic' means the outputs are interpreted as probabilities" +
         " p, where the cell becomes 1 with probability p and 0 with probability (1-p). 'soft'" +
-        " means the outputs are treated as fractional values, with each cell being somewhere" +
-        " between 'alive' and 'dead'.")
+        " means the predictor outputs are written directly to the grid. The predictor outputs are" +
+        " fractional values, so each cell is somewhere between 'alive' and 'dead'.")
     args = parser.parse_args()
 
     grid = gosper_glider

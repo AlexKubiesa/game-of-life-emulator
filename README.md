@@ -33,8 +33,9 @@ Command-line help is available with:
 * `explicit` is a predictor with the Game of Life update rule explicitly coded in.
 
 **`--update-mode`**: The grid update mode determines how the predictor's output update the grid. Default value: `normal`.
-* `normal` means the outputs are thresholded to 0 or 1 and the grid is updated with the thresholded values.
+* `normal` means the outputs are thresholded to 0 or 1 and the thresholded values are written to the grid.
 * `probabilistic` means the outputs are interpreted as probabilities p, where the cell becomes 1 with probability p and 0 with probability (1-p).
+* `soft` means the predictor outputs are written directly to the grid. The predictor outputs are fractional values, so each cell is somewhere between "alive" and "dead".
 
 
 # Retraining the model

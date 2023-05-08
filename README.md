@@ -24,11 +24,17 @@ Command-line help is available with:
 > `python pygame_life.py --help`
 
 
-## Switching to rule-based prediction
+## Command-line options
 
-When running the game on the command line, you can optionally specify the predictor used with the `--predictor` option. Choose `"explicit"` to use the explicit predictor.
+**`--help`**: Shows command-line help.
 
-> `python pygame_life.py --predictor explicit`
+**`--predictor`**: The predictor is the component which controls grid updates. Default value: `model`.
+* `model` is a machine learning model-based predictor.
+* `explicit` is a predictor with the Game of Life update rule explicitly coded in.
+
+**`--update-mode`**: The grid update mode determines how the predictor's output update the grid. Default value: `normal`.
+* `normal` means the outputs are thresholded to 0 or 1 and the grid is updated with the thresholded values.
+* `probabilistic` means the outputs are interpreted as probabilities p, where the cell becomes 1 with probability p and 0 with probability (1-p).
 
 
 # Retraining the model

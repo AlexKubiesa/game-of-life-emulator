@@ -44,6 +44,8 @@ The ML model is a fully-convolutional neural network trained using `train_cell_p
 
 The notebooks prefixed with `experiment_XX` were experiments used to improve this process.
 
+If you train and save a model with a different architecture to the original, you'll need to update the duplicate model definition in `models.py` so that the weights can be loaded to run the game.
+
 # Acknowledgements
 
 The original inspiration for this can be traced back to Ollin Boer Bohan's blog post here: https://madebyoll.in/posts/game_emulation_via_dnn/
